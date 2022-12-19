@@ -3,11 +3,6 @@ const bcrypt = require("bcrypt");
 
 const userSchema = new Schema(
 	{
-		name: {
-			type: String,
-			required: [true, "Name is required"],
-		},
-
 		password: {
 			type: String,
 			required: [true, "Password is required"],
@@ -19,14 +14,14 @@ const userSchema = new Schema(
 			unique: true,
 		},
 
-		token: {
+		accessToken: {
 			type: String,
 			default: null,
 		},
 
-		avatarURL: {
+		refreshToken: {
 			type: String,
-			required: true,
+			default: null,
 		},
 
 		isAdmin: {

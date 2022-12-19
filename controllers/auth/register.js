@@ -1,41 +1,40 @@
 const { Conflict } = require("http-errors");
 const { User } = require("../../models");
-const { nanoid } = require("nanoid");
+
 const gravatar = require("gravatar");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+
+const { SECRET_KEY } = process.env;
 
 const register = async (req, res, next) => {
 	try {
-		const { name, email, password } = req.body;
+		const { email, password } = req.body;
 		const user = await User.findOne({ email });
 		if (user) throw new Conflict(`This email in use`);
-		const verifyToken = nanoid();
+
 		const hashPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 		const avatarURL = gravatar.url(email);
-		const result = await User.create({
-			name,
+		const newUser = await User.create({
 			email,
 			password: hashPassword,
 			avatarURL,
-			verifyToken,
 		});
-
-		// const mail = {
-		//   to: email,
-		//   subject: "Email confirmation",
-		//   html: `<a  href="https://watchentrailer.herokuapp.com/api/users/verify/${verifyToken}" target="_blank">Confirm your email</a>`,
-		// };
-
-		// await sendEmail(mail);
+		const payload = {
+			id: newUser._id,
+		};
+		const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "5h" });
+		await User.findByIdAndUpdate(newUser._id, { accessToken: token });
 
 		res.status(201).json({
 			status: "success",
 			code: 201,
 			user: {
-				name: result.name,
-				email: result.email,
-				verifyToken: result.verifyToken,
+				email: newUser.email,
+				isAdmin: newUser.isAdmin,
 			},
+			accessToken: token,
+			refreshToken: null,
 		});
 	} catch (error) {
 		next(error);
