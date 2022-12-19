@@ -1,7 +1,6 @@
 const { Conflict } = require("http-errors");
-const { User } = require("../../models");
+const { User, RefreshToken } = require("../../models");
 
-const gravatar = require("gravatar");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -14,11 +13,10 @@ const register = async (req, res, next) => {
 		if (user) throw new Conflict(`This email in use`);
 
 		const hashPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-		const avatarURL = gravatar.url(email);
+
 		const newUser = await User.create({
 			email,
 			password: hashPassword,
-			avatarURL,
 		});
 		const payload = {
 			id: newUser._id,
@@ -26,7 +24,12 @@ const register = async (req, res, next) => {
 		const token = jwt.sign(payload, config.secret_key, {
 			expiresIn: config.jwtExpiration,
 		});
-		await User.findByIdAndUpdate(newUser._id, { accessToken: token });
+
+		const refreshToken = await RefreshToken.createToken(newUser);
+		await User.findByIdAndUpdate(newUser._id, {
+			accessToken: token,
+			refreshToken: refreshToken,
+		});
 
 		res.status(201).json({
 			status: "success",
@@ -35,7 +38,7 @@ const register = async (req, res, next) => {
 				email: newUser.email,
 				isAdmin: newUser.isAdmin,
 				accessToken: token,
-				refreshToken: null,
+				refreshToken: refreshToken,
 			},
 		});
 	} catch (error) {

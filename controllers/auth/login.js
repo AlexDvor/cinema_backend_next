@@ -1,7 +1,6 @@
 const { Unauthorized } = require("http-errors");
-const { User } = require("../../models");
+const { User, RefreshToken } = require("../../models");
 const config = require("../../config/auth.config");
-const { RefreshToken } = require("../../models");
 
 const jwt = require("jsonwebtoken");
 
