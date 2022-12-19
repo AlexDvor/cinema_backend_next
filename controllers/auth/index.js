@@ -1,6 +1,6 @@
 const register = require("./register");
 const login = require("./login");
 const logout = require("./logout");
-const checkToken = require("./check-token");
+const refreshToken = require("./refresh-token");
 
-module.exports = { register, login, logout, checkToken };
+module.exports = { register, login, logout, refreshToken };

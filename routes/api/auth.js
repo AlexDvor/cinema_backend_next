@@ -6,7 +6,7 @@ const { registerJoiSchema, loginJoiSchema } = require("../../schemas");
 
 router.post("/register", validation(registerJoiSchema), ctrl.register);
 router.post("/login", validation(loginJoiSchema), ctrl.login);
-router.post("/login/access-token", auth, ctrl.checkToken);
+router.post("/refresh-token", ctrl.refreshToken);
 router.get("/logout", auth, ctrl.logout);
 
 module.exports = router;

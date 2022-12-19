@@ -1,6 +1,7 @@
 const { Unauthorized } = require("http-errors");
 const { User } = require("../../models");
 const config = require("../../config/auth.config");
+const { RefreshToken } = require("../../models");
 
 const jwt = require("jsonwebtoken");
 
@@ -8,25 +9,28 @@ const login = async (req, res, next) => {
 	try {
 		const { email, password } = req.body;
 		const user = await User.findOne({ email });
+
 		if (!user || !user.comparePassword(password))
 			throw new Unauthorized("Email or password is wrong");
 
 		const payload = {
 			id: user._id,
 		};
-		const token = jwt.sign(payload, config.secret_key, {
+		const accessToken = jwt.sign(payload, config.secret_key, {
 			expiresIn: config.jwtExpiration,
 		});
 
-		await User.findByIdAndUpdate(user._id, { token });
+		const refreshToken = await RefreshToken.createToken(user);
+
+		await User.findByIdAndUpdate(user._id, { accessToken });
 		res.json({
 			status: "success",
 			code: 200,
 			user: {
 				email: user.email,
 				isAdmin: user.isAdmin,
-				accessToken: token,
-				refreshToken: null,
+				accessToken,
+				refreshToken,
 			},
 		});
 	} catch (error) {

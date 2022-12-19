@@ -6,10 +6,9 @@ const { SECRET_KEY } = process.env;
 const auth = async (req, res, next) => {
 	const { authorization = "" } = req.headers;
 
-	console.log("🚀 - authorization", authorization);
-
 	const [bearer, token] = authorization.split(" ");
 	try {
+		if (!token) throw new Forbidden("No token provided!");
 		if (bearer !== "Bearer") {
 			throw new Unauthorized("Not authorized");
 		}
@@ -23,6 +22,7 @@ const auth = async (req, res, next) => {
 		}
 
 		req.user = user;
+
 		next();
 	} catch (error) {
 		if (error.message === "Invalid signature") {
