@@ -28,9 +28,9 @@ const login = async (req, res, next) => {
 			user: {
 				email: user.email,
 				isAdmin: user.isAdmin,
-				accessToken,
-				refreshToken,
 			},
+			accessToken,
+			refreshToken,
 		});
 	} catch (error) {
 		next(error);

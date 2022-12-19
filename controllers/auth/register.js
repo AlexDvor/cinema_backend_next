@@ -37,9 +37,9 @@ const register = async (req, res, next) => {
 			user: {
 				email: newUser.email,
 				isAdmin: newUser.isAdmin,
-				accessToken: token,
-				refreshToken: refreshToken,
 			},
+			accessToken: token,
+			refreshToken: refreshToken,
 		});
 	} catch (error) {
 		next(error);
