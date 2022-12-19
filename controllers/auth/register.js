@@ -5,7 +5,7 @@ const gravatar = require("gravatar");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-const { SECRET_KEY } = process.env;
+const config = require("../../config/auth.config");
 
 const register = async (req, res, next) => {
 	try {
@@ -23,7 +23,9 @@ const register = async (req, res, next) => {
 		const payload = {
 			id: newUser._id,
 		};
-		const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "5h" });
+		const token = jwt.sign(payload, config.secret_key, {
+			expiresIn: config.jwtExpiration,
+		});
 		await User.findByIdAndUpdate(newUser._id, { accessToken: token });
 
 		res.status(201).json({
@@ -32,9 +34,9 @@ const register = async (req, res, next) => {
 			user: {
 				email: newUser.email,
 				isAdmin: newUser.isAdmin,
+				accessToken: token,
+				refreshToken: null,
 			},
-			accessToken: token,
-			refreshToken: null,
 		});
 	} catch (error) {
 		next(error);

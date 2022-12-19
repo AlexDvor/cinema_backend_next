@@ -1,9 +1,8 @@
 const { Unauthorized } = require("http-errors");
 const { User } = require("../../models");
+const config = require("../../config/auth.config");
 
 const jwt = require("jsonwebtoken");
-
-const { SECRET_KEY } = process.env;
 
 const login = async (req, res, next) => {
 	try {
@@ -15,7 +14,10 @@ const login = async (req, res, next) => {
 		const payload = {
 			id: user._id,
 		};
-		const token = jwt.sign(payload, SECRET_KEY, { expiresIn: 60 });
+		const token = jwt.sign(payload, config.secret_key, {
+			expiresIn: config.jwtExpiration,
+		});
+
 		await User.findByIdAndUpdate(user._id, { token });
 		res.json({
 			status: "success",
@@ -23,9 +25,9 @@ const login = async (req, res, next) => {
 			user: {
 				email: user.email,
 				isAdmin: user.isAdmin,
+				accessToken: token,
+				refreshToken: null,
 			},
-			accessToken: token,
-			refreshToken: null,
 		});
 	} catch (error) {
 		next(error);
