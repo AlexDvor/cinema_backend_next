@@ -2,6 +2,7 @@ const { Unauthorized } = require("http-errors");
 const jwt = require("jsonwebtoken");
 const { User } = require("../models");
 const { SECRET_KEY } = process.env;
+const { TokenExpiredError } = jwt;
 
 const auth = async (req, res, next) => {
 	const { authorization = "" } = req.headers;
@@ -14,7 +15,6 @@ const auth = async (req, res, next) => {
 		}
 
 		const { id } = jwt.verify(token, SECRET_KEY);
-
 		const user = await User.findById(id);
 
 		if (!user || !user.accessToken) {
@@ -27,6 +27,10 @@ const auth = async (req, res, next) => {
 	} catch (error) {
 		if (error.message === "Invalid signature") {
 			error.status = 401;
+		}
+		if (error instanceof TokenExpiredError) {
+			error.status = 401;
+			error.message = "Unauthorized! Access Token was expired!";
 		}
 		next(error);
 	}

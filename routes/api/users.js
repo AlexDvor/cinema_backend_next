@@ -3,7 +3,7 @@ const router = express.Router();
 const { auth } = require("../../middlewares");
 const { users: ctrl } = require("../../controllers");
 
-router.get("/current", auth, ctrl.getCurrent);
+router.get("/current/user", auth, ctrl.getCurrent);
 router.get("/profile", auth, ctrl.getProfile);
 router.get("/profile/favorites", auth, ctrl.getFavoriteList);
 router.delete("/favorite/remove/:movieId", auth, ctrl.removeFavoriteMovie);

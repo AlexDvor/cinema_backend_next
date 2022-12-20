@@ -27,9 +27,9 @@ const refreshToken = async (req, res, next) => {
 			});
 			return;
 		}
-		const userId = dataToken.user;
 
-		let newAccessToken = jwt.sign(
+		const userId = dataToken.user;
+		const newAccessToken = jwt.sign(
 			{ id: dataToken.user._id },
 			config.secret_key,
 			{
@@ -37,9 +37,17 @@ const refreshToken = async (req, res, next) => {
 			}
 		);
 
-		await User.findByIdAndUpdate(userId, { accessToken: newAccessToken });
+		const currentUser = await User.findByIdAndUpdate(userId, {
+			accessToken: newAccessToken,
+		});
 
-		return res.status(200).json({
+		return res.json({
+			status: "success",
+			code: 200,
+			user: {
+				email: currentUser.email,
+				isAdmin: currentUser.isAdmin,
+			},
 			accessToken: newAccessToken,
 			refreshToken: dataToken.token,
 		});
