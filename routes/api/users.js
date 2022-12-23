@@ -6,7 +6,6 @@ const { users: ctrl } = require("../../controllers");
 router.get("/current/user", auth, ctrl.getCurrent);
 router.get("/profile", auth, ctrl.getProfile);
 router.get("/profile/favorites", auth, ctrl.getFavoriteList);
-router.delete("/favorite/remove/:movieId", auth, ctrl.removeFavoriteMovie);
-router.post("/favorite/add", auth, ctrl.addFavoriteMovie);
+router.post("/profile/favorite/movies/toggle", auth, ctrl.toggleFavoriteMovie);
 
 module.exports = router;

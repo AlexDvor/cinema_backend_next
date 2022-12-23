@@ -4,11 +4,14 @@ const getProfile = async (req, res, next) => {
 	const { _id } = req.user;
 
 	try {
-		const result = await User.findOne({ _id });
+		const user = await User.findOne({ _id });
 		res.json({
 			status: "success",
 			code: 200,
-			data: result,
+			user: {
+				email: user.email,
+				isAdmin: user.isAdmin,
+			},
 		});
 	} catch (error) {
 		next(error);
