@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { validation, auth } = require("../../middlewares/index");
+const { validation, auth } = require("../../middleware/index");
 const { auth: ctrl } = require("../../controllers/index");
 const { registerJoiSchema, loginJoiSchema } = require("../../schemas");
 
