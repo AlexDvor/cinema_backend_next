@@ -2,7 +2,7 @@ const { Static } = require("../../models");
 
 const { STATIC_BASE_ID } = process.env;
 
-const register = async (req, res, next) => {
+const addStatic = async (req, res, next) => {
 	try {
 		const statistic = await Static.findById(STATIC_BASE_ID);
 		const results = statistic.guests;
@@ -17,4 +17,4 @@ const register = async (req, res, next) => {
 	}
 };
 
-module.exports = register;
+module.exports = addStatic;

@@ -1,9 +1,9 @@
 const auth = require("./auth");
 const users = require("./users");
-const static = require("./static");
+const admin = require("./admin");
 
 module.exports = {
 	auth,
 	users,
-	static,
+	admin,
 };
