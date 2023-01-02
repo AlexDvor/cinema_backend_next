@@ -4,7 +4,6 @@ const { STATIC_BASE_ID } = process.env;
 
 const register = async (req, res, next) => {
 	try {
-		console.log("static");
 		const statistic = await Static.findById(STATIC_BASE_ID);
 		const results = statistic.guests;
 		const updateResult = Number(results) + 1;
