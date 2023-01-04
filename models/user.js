@@ -31,6 +31,7 @@ const userSchema = new Schema(
 		favorite: {
 			movies: [],
 			actors: [],
+			tv: [],
 		},
 	},
 	{ versionKey: false, timestamps: true }

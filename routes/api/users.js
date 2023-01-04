@@ -9,5 +9,6 @@ router.post("/profile/update", auth, ctrl.resetPassword);
 router.get("/profile/favorites", auth, ctrl.getFavoriteList);
 router.post("/profile/favorite/movies/toggle", auth, ctrl.toggleFavoriteMovie);
 router.post("/profile/favorite/actor/toggle", auth, ctrl.toggleFavoriteActor);
+router.post("/profile/favorite/tv/toggle", auth, ctrl.toggleFavoriteTv);
 
 module.exports = router;
