@@ -19,9 +19,22 @@ const login = async (req, res, next) => {
 			expiresIn: config.jwtExpiration,
 		});
 
-		const refreshToken = await RefreshToken.createToken(user);
+		const hasRefreshToken = await RefreshToken.findOne({ user: user._id });
 
-		await User.findByIdAndUpdate(user._id, { accessToken });
+		if (!hasRefreshToken) {
+			const refreshToken = await RefreshToken.createToken(user);
+			await User.findByIdAndUpdate(user._id, { accessToken });
+			res.json({
+				status: "success",
+				code: 200,
+				user: {
+					email: user.email,
+					isAdmin: user.isAdmin,
+				},
+				accessToken,
+				refreshToken,
+			});
+		}
 		res.json({
 			status: "success",
 			code: 200,
@@ -30,7 +43,7 @@ const login = async (req, res, next) => {
 				isAdmin: user.isAdmin,
 			},
 			accessToken,
-			refreshToken,
+			refreshToken: hasRefreshToken.token,
 		});
 	} catch (error) {
 		next(error);
