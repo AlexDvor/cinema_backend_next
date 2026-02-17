@@ -1,31 +1,182 @@
-## GoIT Node.js Course Template Homework
+# 🎬 Cinema Backend API
 
-Выполните форк этого репозитория для выполнения домашних заданий (2-6)
-Форк создаст репозиторий на вашем http://github.com
+A production-ready RESTful Node.js API for cinema applications with
+authentication, favorites management, and admin control.
 
-Добавьте ментора в коллаборацию
+------------------------------------------------------------------------
 
-Для каждой домашней работы создавайте свою ветку.
+## 📚 Table of Contents
 
-- hw02
-- hw03
-- hw04
-- hw05
-- hw06
+-   [Tech Stack](#-tech-stack)
+-   [Features](#-features)
+-   [Installation](#-installation)
+-   [Usage](#-usage)
+-   [Project Goals](#-project-goals)
+-   [Deployment](#-deployment)
 
-Каждая новая ветка для дз должна делаться с master
+------------------------------------------------------------------------
 
-После того как вы закончили выполнять домашнее задание в своей ветке, необходимо сделать пулл-реквест (PR). Потом добавить ментора для ревью кода. Только после того как ментор заапрувит PR, вы можете выполнить мердж ветки с домашним заданием в мастер.
+## 🛠 Tech Stack
 
-Внимательно читайте комментарии ментора. Исправьте замечания и сделайте коммит в ветке с домашним заданием. Изменения подтянуться в PR автоматически после того как вы отправите коммит с исправлениями на github
-После исправления снова добавьте ментора на ревью кода.
+### 🚀 Core
 
-- При сдаче домашней работы есть ссылка на PR
-- JS-код чистый и понятный, для форматирования используется Prettier
+-   Node.js
+-   Express.js
+-   MongoDB
+-   Mongoose
 
-### Команды:
+### 🔐 Authentication & Security
 
-- `npm start` &mdash; старт сервера в режиме production
-- `npm run start:dev` &mdash; старт сервера в режиме разработки (development)
-- `npm run lint` &mdash; запустить выполнение проверки кода с eslint, необходимо выполнять перед каждым PR и исправлять все ошибки линтера
-- `npm lint:fix` &mdash; та же проверка линтера, но с автоматическими исправлениями простых ошибок
+-   JSON Web Tokens (JWT)
+-   bcrypt
+-   nanoid
+-   uuid
+
+### 📦 Middleware & Utilities
+
+-   Joi (request validation)
+-   CORS
+-   Morgan (logging)
+-   dotenv
+-   http-errors
+
+### 🖼 File & Media Handling
+
+-   Multer (file uploads)
+-   Jimp (image processing)
+-   Gravatar
+
+### 📧 Email Integration
+
+-   SendGrid (@sendgrid/mail)
+
+### 🧪 Development Tools
+
+-   Nodemon
+-   ESLint (Standard Config)
+-   cross-env
+
+------------------------------------------------------------------------
+
+## 🚀 Features
+
+-   🔐 Secure JWT Authentication (Access + Refresh Tokens)
+-   👤 User Registration & Login
+-   🔄 Token Refresh & Logout
+-   🔑 Password Reset via Email
+-   ❤️ Manage Favorite Movies, Actors, and TV Shows
+-   🧑‍💼 Role-Based Access Control (Admin / User)
+-   📁 Avatar Upload & Image Processing
+-   📧 Email Notifications via SendGrid
+-   🗄 MongoDB Database Integration
+-   🧩 Modular MVC-like Project Architecture
+
+------------------------------------------------------------------------
+
+## ⚙️ Installation
+
+### 1️⃣ Clone the repository
+
+``` bash
+git clone https://github.com/your-username/cinema-backend.git
+cd cinema-backend
+```
+
+### 2️⃣ Install dependencies
+
+``` bash
+npm install
+```
+
+### 3️⃣ Create `.env` file
+
+Create a `.env` file in the root directory:
+
+``` env
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_access_token_secret
+JWT_REFRESH_SECRET=your_refresh_token_secret
+SENDGRID_API_KEY=your_sendgrid_api_key
+BASE_URL=http://localhost:5000
+```
+
+### 4️⃣ Run the project
+
+#### Development mode
+
+``` bash
+npm run start:dev
+```
+
+#### Production mode
+
+``` bash
+npm start
+```
+
+Server will start at:
+
+http://localhost:5000
+
+------------------------------------------------------------------------
+
+## 🧪 Usage
+
+### Base API URL
+
+http://localhost:5000/api
+
+Protected routes require an access token in the header:
+
+Authorization: Bearer `<access_token>`{=html}
+
+Main route groups:
+
+-   /api/auth -- Authentication routes\
+-   /api/users -- User profile & favorites\
+-   /api/admin -- Admin-only routes
+
+Test using Postman, Thunder Client, or Insomnia.
+
+------------------------------------------------------------------------
+
+## 🎯 Project Goals
+
+-   Build scalable RESTful backend architecture
+-   Implement JWT authentication with refresh tokens
+-   Apply secure password hashing using bcrypt
+-   Design MongoDB schemas with Mongoose
+-   Implement request validation with Joi
+-   Structure backend using modular MVC principles
+-   Integrate third-party email service (SendGrid)
+-   Implement file uploads and image processing
+-   Prepare production-ready backend for frontend integration
+-   Practice role-based access control
+
+------------------------------------------------------------------------
+
+## 🌐 Deployment
+
+This backend can be deployed using:
+
+-   Docker
+-   Render
+-   Railway
+-   Heroku
+-   DigitalOcean
+-   MongoDB Atlas
+
+### Deployment Checklist
+
+-   Configure production environment variables
+-   Secure JWT secrets
+-   Use MongoDB Atlas for database hosting
+-   Configure CORS for frontend domain
+-   Enable HTTPS in production
+
+------------------------------------------------------------------------
+
+## 📌 License
+
+This project is created for educational and portfolio purposes.
